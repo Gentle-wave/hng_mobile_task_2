@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../models/cv_model.dart';
+//import '../models/cv_model.dart';
 
 class CVEditScreen extends StatefulWidget {
 

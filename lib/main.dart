@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/cv_view.dart';
 import 'models/cv_model.dart';
 
 void main() {
-  runApp(
-     ChangeNotifierProvider(
-      create: (context) => CVModel(),  
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -28,11 +22,12 @@ class AppNavigator extends StatefulWidget {
   const AppNavigator({super.key});
 
   @override
-  _AppNavigatorState createState() => _AppNavigatorState();
+  State<AppNavigator> createState() => _AppNavigatorState();
 }
 
 class _AppNavigatorState extends State<AppNavigator> {
   bool _showSplash = true;
+  final cvModel = CVModel();
 
   @override
   void initState() {
@@ -46,12 +41,15 @@ class _AppNavigatorState extends State<AppNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CVModel>(
-      builder: (context, cvModel, child) {
-        return _showSplash 
-          ? SplashScreen()
-          : CVViewScreen(cvModel: cvModel);
-      }
-    );
+    return _showSplash
+        ? SplashScreen()
+        : CVViewScreen(
+            cvModel: cvModel,
+            onUpdate: (updatedData) {
+              setState(() {
+                cvModel.updateCV(updatedData);
+              });
+            },
+          );
   }
 }

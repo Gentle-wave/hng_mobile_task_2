@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class CVModel extends ChangeNotifier {
+class CVModel {
 
   String _fullName = 'Adebayo oluwatobiloba';
   String _slackUsername = 'Adebayo'; 
@@ -12,13 +12,12 @@ class CVModel extends ChangeNotifier {
   String get githubHandle => _githubHandle;
   String get bio => _bio;
 
-  void updateCV(Map<String, String> updatedData) {
+  void updateCV(Map updatedData) {
     _fullName = updatedData['fullName'] ?? _fullName;
     _slackUsername = updatedData['slackUsername'] ?? _slackUsername;
     _githubHandle = updatedData['githubHandle'] ?? _githubHandle; 
     _bio = updatedData['bio'] ?? _bio;
     
-    notifyListeners();
   }
 
 }

@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
-
 import 'cv_edit.dart';
 import '../models/cv_model.dart';
 
-class CVViewScreen extends StatelessWidget {
+class CVViewScreen extends StatefulWidget {
   final CVModel cvModel;
+  final Function(Map) onUpdate;
 
-  const CVViewScreen({Key? key, required this.cvModel}) : super(key: key);
+  const CVViewScreen({
+    super.key,
+    required this.cvModel,
+    required this.onUpdate,
+  });
+
+  @override
+  _CVViewScreenState createState() => _CVViewScreenState();
+}
+
+class _CVViewScreenState extends State<CVViewScreen> {
+  late CVModel _cvModel;
+
+  @override
+  void initState() {
+    _cvModel = widget.cvModel;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +49,7 @@ class CVViewScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  cvModel.fullName,
+                  _cvModel.fullName,
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
@@ -50,7 +67,7 @@ class CVViewScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  '@${cvModel.slackUsername}',
+                  '@${_cvModel.slackUsername}',
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
@@ -68,7 +85,7 @@ class CVViewScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  cvModel.githubHandle,
+                  _cvModel.githubHandle,
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
@@ -84,11 +101,11 @@ class CVViewScreen extends StatelessWidget {
                 ),
                 elevation: 2,
                 child: Container(
-                  height: 75,
+                  //height: 75,
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    cvModel.bio,
+                    _cvModel.bio,
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
@@ -100,12 +117,13 @@ class CVViewScreen extends StatelessWidget {
                 final updatedData = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CVEditScreen(),
+                    builder: (context) => CVEditScreen(
+                      cvModel: _cvModel,
+                    ),
                   ),
                 );
-
                 if (updatedData != null) {
-                  cvModel.updateCV(updatedData);
+                  widget.onUpdate(updatedData);
                 }
               },
               child: const Text(
